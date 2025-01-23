@@ -13,23 +13,19 @@ const ProductsCatalog: FC = () => {
     (state: RootState) => state.products
   );
 
-  // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 5;
 
   useEffect(() => {
-    // Load products with "asc" sorting by default
     dispatch(getProducts({ sort: "asc" }));
   }, [dispatch]);
 
-  // Pagination logic
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
-  // Calculate the number of pages
   const pageCount = Math.ceil(filteredProducts.length / productsPerPage);
 
   return (
@@ -46,11 +42,9 @@ const ProductsCatalog: FC = () => {
 
       {!loading && error ? (
         <Warning>{error}</Warning>
-      ) : !loading && filteredProducts.length < 1 ? (
+      ) : !loading && currentProducts.length < 1 ? (
         <Warning>No products were found.</Warning>
       ) : (
-        // to do:
-        // currentProducts < 1 ürün geliyor mu gelmiyor mu kontrol
         <div>
           <div className="grid 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 grid-cols-1 w-full gap-8 pt-14">
             {currentProducts.map((product) => (
@@ -58,7 +52,6 @@ const ProductsCatalog: FC = () => {
             ))}
           </div>
 
-          {/* Pagination Controls */}
           <div className="pagination flex justify-center gap-4 mt-8 mb-12">
             <button
               disabled={currentPage === 1}

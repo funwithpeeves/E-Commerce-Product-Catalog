@@ -5,16 +5,18 @@ import { useSelector } from "react-redux";
 import ReactSelect from "react-select";
 import { filter } from "../../redux/productsSlice";
 
-// type olş
+interface SearchbarProps {
+  onSearch?: (title: string, category: string) => void;
+}
 
-const Searchbar: FC = () => {
+const Searchbar: FC<SearchbarProps> = ({ onSearch }) => {
   const dispatch = useAppDispatch();
   const { products } = useSelector((state: RootState) => state.products);
 
   const [title, setTitle] = useState<string>("");
   const [category, setCategory] = useState<string>("");
 
-  // Başlık seçeneklerini oluştur
+  
   const titleOptions = useMemo(() => {
     const uniqueTitles = Array.from(
       new Set(products.map((product) => product.title))
@@ -25,7 +27,7 @@ const Searchbar: FC = () => {
     }));
   }, [products]);
 
-  // Kategori seçeneklerini oluştur
+  
   const categoryOptions = useMemo(() => {
     const uniqueCategories = Array.from(
       new Set(products.map((product) => product.category))
@@ -36,10 +38,15 @@ const Searchbar: FC = () => {
     }));
   }, [products]);
 
-  // Filtreleme işlemi
+ 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    dispatch(filter({ title, category }));
+   
+    if (onSearch) {
+      onSearch(title, category);
+    } else {
+      dispatch(filter({ title, category }));
+    }
   };
 
   return (

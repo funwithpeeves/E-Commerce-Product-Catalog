@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import ReactSelect from "react-select";
 import { useAppDispatch } from "../../redux/store";
 import { sortByPrice, sortByRating } from "../../redux/productsSlice"; 

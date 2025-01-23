@@ -38,7 +38,7 @@ describe("Card Component", () => {
       </ThemeProvider>
     );
 
-    // Control of title and price
+   
     expect(
       screen.getByText("Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops")
     ).toBeInTheDocument();
@@ -52,7 +52,7 @@ describe("Card Component", () => {
       </ThemeProvider>
     );
 
-    // Product title is a string or not
+   
     const productTitle = screen.getByText(product.title);
     expect(typeof productTitle.textContent).toBe("string");
   });
@@ -64,11 +64,11 @@ describe("Card Component", () => {
       </ThemeProvider>
     );
 
-    // Find 'More' button and click
+  
     const moreButton = screen.getByText("More");
     fireEvent.click(moreButton);
 
-    // Control if Modal is opening (description text)
+    
     expect(screen.getByText(product.description)).toBeInTheDocument();
   });
 
@@ -79,18 +79,18 @@ describe("Card Component", () => {
       </ThemeProvider>
     );
 
-    // Find 'More' button and click
+    
     const moreButton = screen.getByText("More");
     fireEvent.click(moreButton);
 
-    // Control if Modal is opening
+ 
     expect(screen.getByText(product.description)).toBeInTheDocument();
 
-    // Find 'Close' button and click (by using alt text)
+    
     const closeButton = screen.getByAltText("Close");
     fireEvent.click(closeButton);
 
-    // Control if Modal is closing
+   
     expect(screen.queryByText(product.description)).not.toBeInTheDocument();
   });
 
@@ -101,7 +101,6 @@ describe("Card Component", () => {
       </ThemeProvider>
     );
 
-    // Control if error message is rendered
     expect(screen.getByText("Error")).toBeInTheDocument();
     expect(screen.getByText("Product data is missing")).toBeInTheDocument();
   });
