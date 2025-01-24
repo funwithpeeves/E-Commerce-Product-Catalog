@@ -17,24 +17,28 @@ const product: ProductType = {
 };
 
 describe("Modal Component", () => {
-  test("should render product details correctly when open", () => {
+  it("should render product details correctly when open", () => {
     render(<Modal product={product} isOpen={true} close={() => {}} image={product.image} />);
 
-    expect(screen.getByText(product.title)).toBeInTheDocument();
-    expect(screen.getByText(product.description)).toBeInTheDocument();
-    expect(screen.getByText(`${product.price.toFixed(2)}`)).toBeInTheDocument();
-    expect(screen.getByText(`${product.rating.rate} / 5`)).toBeInTheDocument();
-    expect(screen.getByAltText(product.title)).toBeInTheDocument();
+    const title = screen.queryByText(product.title);
+    const description = screen.queryByText(product.description);
+    const price = screen.queryByText(`${product.price.toFixed(2)}`);
+    const rating = screen.queryByText(`${product.rating.rate} / 5`);
+    const imageAlt = screen.queryByAltText(product.title);
+
+    expect(title).not.toBeNull();
+    expect(description).not.toBeNull();
+    expect(price).not.toBeNull();
+    expect(rating).not.toBeNull();
+    expect(imageAlt).not.toBeNull();
   });
 
-  
-  test("debug ReactStars rendering", () => {
+  it("should log DOM structure for debugging", () => {
     render(<Modal product={product} isOpen={true} close={() => {}} image={product.image} />);
-    console.log(screen.debug());
+    screen.debug();
   });
-  
 
-  test("should call close function when close button is clicked", () => {
+  it("should call close function when close button is clicked", () => {
     const closeMock = jest.fn();
     render(<Modal product={product} isOpen={true} close={closeMock} image={product.image} />);
 
@@ -44,9 +48,10 @@ describe("Modal Component", () => {
     expect(closeMock).toHaveBeenCalledTimes(1);
   });
 
-  test("should not render the modal when isOpen is false", () => {
+  it("should not render the modal when isOpen is false", () => {
     render(<Modal product={product} isOpen={false} close={() => {}} image={product.image} />);
 
-    expect(screen.queryByText(product.title)).not.toBeInTheDocument();
+    const title = screen.queryByText(product.title);
+    expect(title).toBeNull();
   });
 });

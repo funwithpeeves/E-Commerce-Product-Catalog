@@ -38,11 +38,13 @@ describe("Card Component", () => {
       </ThemeProvider>
     );
 
-   
-    expect(
-      screen.getByText("Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops")
-    ).toBeInTheDocument();
-    expect(screen.getByText("109.95")).toBeInTheDocument();
+    const title = screen.queryByText(
+      "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops"
+    );
+    const price = screen.queryByText("109.95");
+
+    expect(title).not.toBeNull();
+    expect(price).not.toBeNull();
   });
 
   it("should render if product title is string", () => {
@@ -52,9 +54,8 @@ describe("Card Component", () => {
       </ThemeProvider>
     );
 
-   
-    const productTitle = screen.getByText(product.title);
-    expect(typeof productTitle.textContent).toBe("string");
+    const productTitle = screen.queryByText(product.title);
+    expect(typeof productTitle?.textContent).toBe("string");
   });
 
   it("should open the modal when the 'More' button is clicked", () => {
@@ -64,12 +65,11 @@ describe("Card Component", () => {
       </ThemeProvider>
     );
 
-  
     const moreButton = screen.getByText("More");
     fireEvent.click(moreButton);
 
-    
-    expect(screen.getByText(product.description)).toBeInTheDocument();
+    const description = screen.queryByText(product.description);
+    expect(description).not.toBeNull();
   });
 
   it("should close the modal when the close button is clicked", () => {
@@ -79,19 +79,17 @@ describe("Card Component", () => {
       </ThemeProvider>
     );
 
-    
     const moreButton = screen.getByText("More");
     fireEvent.click(moreButton);
 
- 
-    expect(screen.getByText(product.description)).toBeInTheDocument();
+    const descriptionBeforeClose = screen.queryByText(product.description);
+    expect(descriptionBeforeClose).not.toBeNull();
 
-    
     const closeButton = screen.getByAltText("Close");
     fireEvent.click(closeButton);
 
-   
-    expect(screen.queryByText(product.description)).not.toBeInTheDocument();
+    const descriptionAfterClose = screen.queryByText(product.description);
+    expect(descriptionAfterClose).toBeNull();
   });
 
   it("should render error component when product prop is missing", () => {
@@ -101,7 +99,10 @@ describe("Card Component", () => {
       </ThemeProvider>
     );
 
-    expect(screen.getByText("Error")).toBeInTheDocument();
-    expect(screen.getByText("Product data is missing")).toBeInTheDocument();
+    const errorTitle = screen.queryByText("Error");
+    const errorMessage = screen.queryByText("Product data is missing");
+
+    expect(errorTitle).not.toBeNull();
+    expect(errorMessage).not.toBeNull();
   });
 });
